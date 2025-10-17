@@ -101,14 +101,7 @@ fun MainScreen(navController: NavController, viewModel: MainScreenVM = hiltViewM
         }
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
-            ) { focusManager.clearFocus() },
-    ) {
+    Column(modifier = Modifier.fillMaxSize()) {
 
         Box (
             modifier = Modifier
@@ -317,7 +310,8 @@ fun DebtsCard(
     debt: DebtItem,
     year: Int,
     month: Int
-) {
+)
+{
 
     val debtName = if (debt.name.length > 10){
         debt.name.substring(0, 10) + "..."
@@ -329,7 +323,9 @@ fun DebtsCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clickable { /*daha sonra yapılacak*/ },
+            .clickable {
+                navController.navigate("debt_detail/${debt.id}/$year/$month")
+            },
         shape = RoundedCornerShape(32.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = run {

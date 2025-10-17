@@ -158,6 +158,7 @@ fun AddDebtScreen(navController: NavController, viewmodel: AddDebtVM = hiltViewM
                                     firstPaymentDate = paymentMonth,
                                     pricePerInstallment = pricePerInstallment
                                 )
+
                                 viewmodel.addDebt(item)
                                 showDialog = false
                                 navController.navigate("main_screen") {
@@ -307,36 +308,18 @@ fun AddDebtScreen(navController: NavController, viewmodel: AddDebtVM = hiltViewM
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ){
-                    Box (
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 120.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color(0xFFEF6C00)),
-                        contentAlignment = Alignment.Center,
-                    ){
-                        Column {
-                            SpecialText("Taksit Sayısı")
-                            NumPicker(
-                                onValueChange = { installment = it.toInt() },
-                                items = (1..24).toList()
-                            )
-                        }
+                    InputFieldBox(title = "Taksit Sayısı") {
+                        NumPicker(
+                            onValueChange = { installment = it.toInt() },
+                            items = (1..24).toList()
+                        )
                     }
 
-                    Box (
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 120.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color(0xFFEF6C00)),
-                        contentAlignment = Alignment.Center,
-                    ){
-                        Column {
-                            SpecialText("Ödeyen Sayısı")
-                            NumPicker(
-                                onValueChange = { payersNum = it.toInt() },
-                                items = (1..8).toList()
-                            )
-                        }
+                    InputFieldBox(title = "Ödeyen Sayısı") {
+                        NumPicker(
+                            onValueChange = { payersNum = it.toInt() },
+                            items = (1..8).toList()
+                        )
                     }
                 }
 
@@ -346,149 +329,78 @@ fun AddDebtScreen(navController: NavController, viewmodel: AddDebtVM = hiltViewM
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ){
-                    Box (
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 120.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color(0xFFEF6C00))
-                            .clickable (
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null
-                            ){ showDatePicker = true },
-                        contentAlignment = Alignment.Center,
-                    ){
-                        Column(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            SpecialText("İlk Ödeme*")
-                            Spacer(Modifier.weight(1f))
-                            val display = firstPaymentDate.ifEmpty { "Seçiniz" }
-                            Text(
-                                text = display,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = Color.White,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(Modifier.weight(1f))
-                        }
-                    }
-
-                    Box (
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 120.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color(0xFFEF6C00)),
-                        contentAlignment = Alignment.Center,
-                    ){
-                        Column {
-                            val categoryList = listOf("Teknoloji", "Bakım", "Giyim" ,"Döviz", "Kira", "Fatura", "Diğer")
-                            SpecialText("Kategori*")
-                            StrPicker(
-                                onValueChange = { category = it },
-                                items = categoryList
-                            )
-                        }
-                    }
-                }
-
-                Spacer(Modifier.height(28.dp))
-
-                Row (
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ){
-                    Box (
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 120.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color(0xFFEF6C00)),
-                        contentAlignment = Alignment.Center,
-                    ){
-                        Column {
-                            val paymentTypeList = listOf("Nakit", "Kredi Kartı", "Diğer")
-                            SpecialText("Ödeme Türü*")
-                            StrPicker(
-                                onValueChange = { paymentType = it },
-                                items = paymentTypeList
-                            )
-                        }
-                    }
-
-                    Box (
-                        modifier = Modifier
-                            .size(width = 160.dp, height = 120.dp)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color(0xFFEF6C00)),
-                        contentAlignment = Alignment.Center,
-                    ){
-                        Column {
-                            SpecialText("Ödeme Yeri")
-                            TextField(
-                                value = payableLocation,
-                                onValueChange = {
-                                    if (it.length <= 16){
-                                        payableLocation = it
-                                    }
-                                },
-                                placeholder = {
-                                    Box(modifier = Modifier.fillMaxWidth()) {
-                                        Text(
-                                            text = "Yazınız...",
-                                            fontSize = 18.sp,
-                                            fontWeight = FontWeight.SemiBold,
-                                            modifier = Modifier.align(Alignment.Center),
-                                            color = Color.White.copy(0.7f)
-                                        )
-                                    }
-                                },
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .width(IntrinsicSize.Min),
-                                colors = TextFieldDefaults.colors(
-                                    focusedContainerColor = Color.Transparent,
-                                    unfocusedContainerColor = Color.Transparent,
-                                    disabledIndicatorColor = Color.Transparent,
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    focusedTextColor = Color.White,
-                                    unfocusedTextColor = Color.White
-                                ),
-                                textStyle = TextStyle(
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.SemiBold,
-                                    textAlign = TextAlign.Center
-                                )
-                            )
-                        }
-                    }
-                }
-
-                Box (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 28.dp, horizontal = 12.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color(0xFFEF6C00)),
-                    contentAlignment = Alignment.Center
-                ){
-                    Column(
-                        modifier = Modifier.fillMaxSize()
+                    InputFieldBox(
+                        title = "İlk Ödeme",
+                        isRequired = true,
+                        modifier = Modifier.clickable (
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ){ showDatePicker = true }
                     ) {
-                        SpecialText("Not")
+                        Spacer(Modifier.weight(1f))
+                        val display = firstPaymentDate.ifEmpty { "Seçiniz" }
+                        Text(
+                            text = display,
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(Modifier.weight(1f))
+                    }
 
+                    InputFieldBox(
+                        title = "Kategori",
+                        isRequired = true
+                    ) {
+                        val categoryList = listOf("Teknoloji", "Bakım", "Giyim" ,"Döviz", "Kira", "Fatura", "Diğer")
+                        StrPicker(
+                            onValueChange = { category = it },
+                            items = categoryList
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(28.dp))
+
+                Row (
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ){
+                    InputFieldBox(
+                        title = "Ödeme Türü",
+                        isRequired = true
+                    ) {
+                        val paymentTypeList = listOf("Nakit", "Kredi Kartı", "Diğer")
+                        StrPicker(
+                            onValueChange = { paymentType = it },
+                            items = paymentTypeList
+                        )
+                    }
+
+                    InputFieldBox(title = "Ödeme Yeri") {
                         TextField(
-                            value = note,
+                            value = payableLocation,
                             onValueChange = {
-                                if (it.length <= 100){
-                                    note = it
+                                if (it.length <= 16){
+                                    payableLocation = it
                                 }
                             },
-                            placeholder = { Text("Not ekle...", color = Color.White.copy(0.7f)) },
+                            placeholder = {
+                                Box(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = "Yazınız...",
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        modifier = Modifier.align(Alignment.Center),
+                                        color = Color.White.copy(0.7f)
+                                    )
+                                }
+                            },
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(4.dp),
+                                .width(IntrinsicSize.Min),
                             colors = TextFieldDefaults.colors(
                                 focusedContainerColor = Color.Transparent,
                                 unfocusedContainerColor = Color.Transparent,
@@ -498,9 +410,41 @@ fun AddDebtScreen(navController: NavController, viewmodel: AddDebtVM = hiltViewM
                                 focusedTextColor = Color.White,
                                 unfocusedTextColor = Color.White
                             ),
-                            textStyle = TextStyle(fontSize = 18.sp)
+                            textStyle = TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Center
+                            )
                         )
                     }
+                }
+
+                InputFieldBoxFullWidth(
+                    title = "Not",
+                    modifier = Modifier.padding(vertical = 28.dp, horizontal = 12.dp)
+                ) {
+                    TextField(
+                        value = note,
+                        onValueChange = {
+                            if (it.length <= 100){
+                                note = it
+                            }
+                        },
+                        placeholder = { Text("Not ekle...", color = Color.White.copy(0.7f)) },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(4.dp),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            focusedTextColor = Color.White,
+                            unfocusedTextColor = Color.White
+                        ),
+                        textStyle = TextStyle(fontSize = 18.sp)
+                    )
                 }
             }
         }
@@ -618,6 +562,49 @@ fun SpecialText(value: String) {
         color = Color.White,
         textAlign = TextAlign.Center
     )
+}
+
+@Composable
+fun InputFieldBox(
+    title: String,
+    modifier: Modifier = Modifier,
+    isRequired: Boolean = false,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .size(width = 160.dp, height = 120.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFEF6C00)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column {
+            SpecialText(title + if (isRequired) "*" else "")
+            content()
+        }
+    }
+}
+
+@Composable
+fun InputFieldBoxFullWidth(
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFFEF6C00)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            SpecialText(title)
+            content()
+        }
+    }
 }
 
 @Composable

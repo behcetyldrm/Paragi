@@ -11,7 +11,7 @@ data class DebtItem(
     val price: Float,
     val installment: Int = 1,
     val pricePerInstallment: Float,
-    val note: String? = null,
+    val note: String,
     val firstPaymentDate: Long,
     val payersNum: Int = 1,
     val paymentType: String,
